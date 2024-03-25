@@ -4,6 +4,7 @@ import font from "../../font2.json";
 
 const ContentText = ({ darkMode }) => {
   const [hovered, setHovered] = useState([false, false, false, false]); // Initialize state for each component
+  const aboutMeSection = document.querySelector("#aboutMeCanvas");
 
   const handlePointerEnter = (index) => {
     setHovered((prevHovered) => {
@@ -25,7 +26,7 @@ const ContentText = ({ darkMode }) => {
     <>
       <Center position={[0, 1.6, 0.2]}>
         <Text3D font={font} position={[0, 0, 0]} size={0.2}>
-          {`Name Ismail \n Age: 19`}
+          {`Name Ismail \n Age 19`}
           <meshMatcapMaterial color={darkMode ? "beige" : "#7F7A73"} />
         </Text3D>
       </Center>
@@ -35,7 +36,7 @@ const ContentText = ({ darkMode }) => {
           speed={1.8}
           onPointerEnter={() => handlePointerEnter(index)}
           onPointerLeave={() => handlePointerLeave(index)}
-          // onClick={() => }
+          onClick={() => aboutMeSection.scrollIntoView()}
         >
           <Text3D
             letterSpacing={0.02}

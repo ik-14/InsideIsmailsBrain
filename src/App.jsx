@@ -1,6 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import "./styles/App.css";
-import { Environment, OrbitControls, Shadow } from "@react-three/drei";
+import { Box, Environment, OrbitControls, Shadow } from "@react-three/drei";
 import { IsmailModel } from "../public/models/IsmailModel";
 import { useState } from "react";
 import { useRef } from "react";
@@ -13,18 +13,20 @@ function App() {
   const ismailModelRef = useRef();
 
   const canvasStyle = {
-    position: "absolute",
     top: 0,
-    left: 0,
-    zIndex: -1, // Ensure the canvas is behind the content
     height: "100vh",
     width: "100vw",
     backgroundColor: darkMode ? "#313531" : "#DDD6C9",
   };
 
+  const themSwitcher = {
+    zIndex: 1,
+    position: "absolute",
+  };
+
   return (
     <>
-      <div>
+      <div style={themSwitcher}>
         <button
           onClick={() => {
             SetDarkMode(true);
@@ -40,7 +42,11 @@ function App() {
           Light Mode
         </button>
       </div>
-      <Canvas style={canvasStyle} camera={{ position: [0, 0.5, 4] }}>
+      <Canvas
+        id="homeCanvas"
+        style={canvasStyle}
+        camera={{ position: [0, 0.5, 4] }}
+      >
         <ambientLight />
         <Environment preset="sunset" />
         <OrbitControls enableZoom={false} maxPolarAngle={Math.PI / 2} />
@@ -58,6 +64,12 @@ function App() {
           <IsmailModel />
         </mesh>
         {modelHovered && <ContentText darkMode={darkMode} />}
+      </Canvas>
+      <Canvas id="aboutMeCanvas" style={canvasStyle}>
+        <ambientLight />
+        <Environment preset="sunset" />
+        <OrbitControls enableZoom={false} maxPolarAngle={Math.PI / 2} />
+        <Box />
       </Canvas>
     </>
   );
