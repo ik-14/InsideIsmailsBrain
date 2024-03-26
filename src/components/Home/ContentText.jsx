@@ -1,13 +1,20 @@
-import { Center, Float, Text3D } from "@react-three/drei";
-import React, { useState } from "react";
+import { Center, Float, Text3D, useCursor } from "@react-three/drei";
+import React, { useEffect, useState } from "react";
 import font from "../../font2.json";
 
-const ContentText = ({ darkMode }) => {
-  const [hovered, setHovered] = useState([false, false, false, false]); // Initialize state for each component
-  const aboutMeSection = document.querySelector("#aboutMeCanvas");
+const ContentText = ({ darkMode, aboutRef, blogRef, photoRef, randomRef }) => {
+  const [hoveredItems, setHoveredItems] = useState([
+    false,
+    false,
+    false,
+    false,
+  ]); // Initialize state for each component
+
+  const [hoveredPointer, setHoveredPointer] = useState(false);
+  useCursor(hoveredPointer);
 
   const handlePointerEnter = (index) => {
-    setHovered((prevHovered) => {
+    setHoveredItems((prevHovered) => {
       const updatedHovered = [...prevHovered]; // Copy the previous state
       updatedHovered[index] = true; // Update the hover state for the specified component
       return updatedHovered;
@@ -15,7 +22,7 @@ const ContentText = ({ darkMode }) => {
   };
 
   const handlePointerLeave = (index) => {
-    setHovered((prevHovered) => {
+    setHoveredItems((prevHovered) => {
       const updatedHovered = [...prevHovered]; // Copy the previous state
       updatedHovered[index] = false; // Update the hover state for the specified component
       return updatedHovered;
@@ -36,7 +43,20 @@ const ContentText = ({ darkMode }) => {
           speed={1.8}
           onPointerEnter={() => handlePointerEnter(index)}
           onPointerLeave={() => handlePointerLeave(index)}
-          onClick={() => aboutMeSection.scrollIntoView()}
+          onClick={() => {
+            const element =
+              index === 0
+                ? aboutRef
+                : index === 1
+                  ? blogRef
+                  : index === 2
+                    ? photoRef
+                    : randomRef;
+
+            element.current.scrollIntoView();
+          }}
+          onPointerOver={() => setHoveredPointer(true)}
+          onPointerOut={() => setHoveredPointer(false)}
         >
           <Text3D
             letterSpacing={0.02}
@@ -46,7 +66,7 @@ const ContentText = ({ darkMode }) => {
               0,
             ]}
             font={font}
-            size={hovered[index] ? 0.35 : 0.18}
+            size={hoveredItems[index] ? 0.35 : 0.18}
           >
             {index === 0
               ? "About Me"
