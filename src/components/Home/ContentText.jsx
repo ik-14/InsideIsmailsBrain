@@ -1,60 +1,63 @@
 import { Center, Float, Text3D, useCursor } from "@react-three/drei";
-import React, { useEffect, useState } from "react";
-import font from "../../font2.json";
+import React, { useState } from "react";
+import font from "../../json/font2.json";
+import { useLocation } from "wouter";
 
-const ContentText = ({ darkMode, aboutRef, blogRef, photoRef, randomRef }) => {
+const ContentText = ({}) => {
   const [hoveredItems, setHoveredItems] = useState([
     false,
     false,
     false,
     false,
-  ]); // Initialize state for each component
+  ]);
 
   const [hoveredPointer, setHoveredPointer] = useState(false);
   useCursor(hoveredPointer);
 
   const handlePointerEnter = (index) => {
     setHoveredItems((prevHovered) => {
-      const updatedHovered = [...prevHovered]; // Copy the previous state
-      updatedHovered[index] = true; // Update the hover state for the specified component
+      const updatedHovered = [...prevHovered];
+      updatedHovered[index] = true;
       return updatedHovered;
     });
   };
 
   const handlePointerLeave = (index) => {
     setHoveredItems((prevHovered) => {
-      const updatedHovered = [...prevHovered]; // Copy the previous state
-      updatedHovered[index] = false; // Update the hover state for the specified component
+      const updatedHovered = [...prevHovered];
+      updatedHovered[index] = false;
       return updatedHovered;
     });
   };
+
+  const [location, setLocation] = useLocation();
 
   return (
     <>
       <Center position={[0, 1.6, 0.2]}>
         <Text3D font={font} position={[0, 0, 0]} size={0.2}>
           {`Name Ismail \n Age 19`}
-          <meshMatcapMaterial color={darkMode ? "beige" : "#7F7A73"} />
+          <meshMatcapMaterial color={"beige"} />
         </Text3D>
       </Center>
       {[0, 1, 2, 3].map((index) => (
         <Float
           key={index}
-          speed={1.8}
+          speed={1.2}
+          onClick={() => {
+            const page =
+              index === 0
+                ? "about"
+                : index === 1
+                  ? "blog"
+                  : index === 2
+                    ? "photos"
+                    : "random";
+
+            setLocation(page);
+          }}
           onPointerEnter={() => handlePointerEnter(index)}
           onPointerLeave={() => handlePointerLeave(index)}
-          onClick={() => {
-            const element =
-              index === 0
-                ? aboutRef
-                : index === 1
-                  ? blogRef
-                  : index === 2
-                    ? photoRef
-                    : randomRef;
-
-            element.current.scrollIntoView();
-          }}
           onPointerOver={() => setHoveredPointer(true)}
           onPointerOut={() => setHoveredPointer(false)}
         >
