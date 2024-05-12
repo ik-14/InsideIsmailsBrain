@@ -45,17 +45,38 @@ const Photos = () => {
         <Environment preset="sunset" />
         <OrbitControls
           enablePan={false}
-          enableZoom={false}
+          enableZoom={true}
           maxPolarAngle={Math.PI / 2}
-          maxAzimuthAngle={1.3089969389957472}
-          minAzimuthAngle={-1.3089969389957472}
+          // maxAzimuthAngle={1.3089969389957472}
+          // minAzimuthAngle={-1.3089969389957472}
         />
+        <mesh position-x={2}></mesh>
         <RoundedBox args={[2, 3, 0.1]}>
           <MeshPortalMaterial side={THREE.DoubleSide}>
             <ambientLight intensity={1} />
             <Environment preset="sunset" />
+
             <mesh>
-              <boxGeometry />
+              <sphereGeometry args={[.8, 64, 64]} />
+              <meshStandardMaterial
+                map={textureHandler(colorhouses)}
+                side={THREE.BackSide}
+              />
+            </mesh>
+            <mesh>
+              <sphereGeometry args={[10, 64, 64]} />
+              <meshStandardMaterial color="green" side={THREE.BackSide} />
+            </mesh>
+          </MeshPortalMaterial>
+        </RoundedBox>
+
+
+        <RoundedBox args={[2, 2.5, 0.1]} position-x={-2}>
+          <MeshPortalMaterial side={THREE.DoubleSide}>
+            <ambientLight intensity={1} />
+            <Environment preset="sunset" />
+            <mesh>
+              <Image url={colorhouses} scale={2.5}/>
             </mesh>
             <mesh>
               <sphereGeometry args={[5, 64, 64]} />
